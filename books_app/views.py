@@ -14,4 +14,14 @@ def __getBooks():
     ]
 def listBooks(request):
     books = __getBooks()
+
+    search_query = request.GET.get('search_name', '')
+    genre_query = request.GET.get('genre', '')
+
+    if search_query:
+        books = [book for book in books if search_query.lower() in book['title'].lower() or search_query.lower() in book['genre'].lower()]
+
+    if genre_query and not search_query:
+        books = [book for book in books if genre_query.lower() in book['genre'].lower()]
+
     return render(request, 'pages/books.html', {'books': books})
