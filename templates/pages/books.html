@@ -56,6 +56,83 @@
         </div>
       </div>
     </section>
+    <div class="container-fluid">
+      <div class="row">
+          <div class="col-lg-6">
+              <div class="card">
+                  <div class="card-header border-0">
+                      <div class="d-flex justify-content-between">
+                          <h3 class="card-title">اجمالي عدد الكتب</h3>                    
+                      </div>
+                  </div>
+                  <div class="card-body">
+                      <div class="d-flex">
+                          <p class="d-flex flex-column">
+                              <span class="text-bold text-lg">{{ total_books }}</span>
+                              <span>اجمالي عدد الكتب</span>
+                          </p>  
+                      </div>
+                      <!-- If dynamic charts are required, chart setup would be here -->
+                      <div class="position-relative mb-4">
+                          <canvas id="visitors-chart" height="200"></canvas>
+                      </div>  
+                  </div>
+              </div>
+              <!-- /.card -->
+          </div>
+          <!-- /.col-md-6 -->
+          <div class="col-lg-6">
+              <div class="card">
+                  <div class="card-header border-0">
+                      <div class="d-flex justify-content-between">
+                          <h3 class="card-title">متوسط سعر الكتب</h3>                    
+                      </div>
+                  </div>
+                  <div class="card-body">
+                      <div class="d-flex">
+                          <p class="d-flex flex-column">
+                              <span class="text-bold text-lg">{{ average_price|floatformat:2 }} $</span>
+                              <span>السعر المتوسط للكتب</span>
+                          </p>  
+                      </div>
+                  </div>
+              </div>
+              <!-- /.card -->
+          </div>
+          <!-- /.col-md-6 -->
+      </div>
+      <!-- /.row -->
+
+      <!-- form add books -->
+      <div class="row m-1 mb-3">   
+          <a href="#bookform" class="btn btn-primary" data-toggle="collapse">+ اضافة كتاب</a>
+      </div>
+
+      <div id="bookform" class="card card-primary collapse">
+          <div class="card-header">
+              <h3 class="card-title">اضافة كتاب</h3>
+          </div>
+          <!-- /.card-header -->
+          <!-- form start -->
+          <form method="POST" action="{% url 'add_book' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="card-body"> 
+                  <input name="title" type="text"  class="form-control" placeholder="عنوان الكتاب">
+                  <input name="author" type="text" class="form-control" placeholder="المؤلف">
+                  <input name="genre" type="text" class="form-control" placeholder="النوع">
+                  <input name="status" type="text" class="form-control" placeholder="الحالة">
+                  <input name="price" type="text" class="form-control" placeholder="السعر">
+                  <input type="text" placeholder="الصورة" class="form-control" name="image_url" id='totalrente' ></small>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                  <button type="submit" class="btn btn-primary">اضافة</button>
+              </div>
+          </form>
+      </div>
+    </div>
   </div>
 </div>
+
 {% endblock %}
