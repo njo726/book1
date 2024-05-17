@@ -1,8 +1,8 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
+from .forms import BookForm
+from .models import Book
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Count, Avg
-from .models import Book
-from .forms import BookForm
 
 def listBooks(request):
     books = Book.objects.all().order_by('title')
@@ -33,7 +33,7 @@ def add_book(request):
         form = BookForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('listBooks')  # Assuming 'listBooks' is the name of the URL pattern for listing books
+            return redirect('listBooks')
     else:
         form = BookForm()
 
@@ -48,5 +48,32 @@ def add_book(request):
         'average_price': average_price,
         'books_by_status': books_by_status,
         'form': form
+    }
+    return render(request, 'pages/books.html', context)
+
+@csrf_exempt
+def update_book(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    if request.method == 'POST':
+        form = BookForm(request.POST, instance=book)
+        if form.is_valid():
+            form.save()
+            return redirect('listBooks')
+    else:
+        form = BookForm(instance=book)
+
+    books = Book.objects.all().order_by('title')
+    total_books = Book.objects.count()
+    average_price = Book.objects.aggregate(Avg('price'))['price__avg']
+    books_by_status = Book.objects.values('status').annotate(total=Count('status')).order_by('status')
+
+    context = {
+        'books': books,
+        'total_books': total_books,
+        'average_price': average_price,
+        'books_by_status': books_by_status,
+        'form': form,
+        'update': True,
+        'book': book
     }
     return render(request, 'pages/books.html', context)

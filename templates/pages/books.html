@@ -2,22 +2,17 @@
 {% load static %}
 {% block content %}
 <div style="direction: rtl;" class="wrapper">
-  <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper p-5">
-    <!-- Content Header (Page header) -->
     <div class="row mb-2">
       <div class="col-sm-6">
         <h1>الكتب</h1>
       </div>
     </div>
 
-    <!-- Main content -->
     <section class="content">
-      <!-- Default box -->
       <div class="card card-solid">
         <div class="card-body pb-0">
           <div class="row d-flex align-items-stretch">
-            <!-- Loop through books -->
             {% for book in books %}
             <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
               <div class="card bg-light">
@@ -41,10 +36,7 @@
                 </div>
                 <div class="card-footer">
                   <div class="text-right">
-                    <a href="#" class="btn btn-sm bg-danger">
-                      <i class="fas fa-trash"></i>
-                    </a>
-                    <a href="#" class="btn btn-sm btn-primary">
+                    <a href="{% url 'update_book' book.pk %}" class="btn btn-sm btn-primary">
                       <i class="fas fa-book"></i> تعديل
                     </a>
                   </div>
@@ -56,6 +48,7 @@
         </div>
       </div>
     </section>
+
     <div class="container-fluid">
       <div class="row">
           <div class="col-lg-6">
@@ -72,15 +65,12 @@
                               <span>اجمالي عدد الكتب</span>
                           </p>  
                       </div>
-                      <!-- If dynamic charts are required, chart setup would be here -->
                       <div class="position-relative mb-4">
                           <canvas id="visitors-chart" height="200"></canvas>
                       </div>  
                   </div>
               </div>
-              <!-- /.card -->
           </div>
-          <!-- /.col-md-6 -->
           <div class="col-lg-6">
               <div class="card">
                   <div class="card-header border-0">
@@ -97,34 +87,28 @@
                       </div>
                   </div>
               </div>
-              <!-- /.card -->
           </div>
-          <!-- /.col-md-6 -->
       </div>
-      <!-- /.row -->
 
-      <!-- form add books -->
       <div class="row m-1 mb-3">   
           <a href="#bookform" class="btn btn-primary" data-toggle="collapse">+ اضافة كتاب</a>
       </div>
 
-      <div id="bookform" class="card card-primary collapse">
+      <div id="bookform" class="card card-primary collapse {% if update %}show{% endif %}">
           <div class="card-header">
-              <h3 class="card-title">اضافة كتاب</h3>
+              <h3 class="card-title">{% if update %}تعديل الكتاب{% else %}اضافة كتاب{% endif %}</h3>
           </div>
-          <!-- /.card-header -->
-          <!-- form start -->
-          <form method="POST" action="{% url 'add_book' %}" enctype="multipart/form-data">
+          <form method="POST" action="{% if update %}{% url 'update_book' book.pk %}{% else %}{% url 'add_book' %}{% endif %}" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="card-body"> 
-              {{ form }}
+            <div class="card-body">
+              {{ form.as_p }}
             </div>
             <div class="card-footer">
-              <button type="submit" class="btn btn-primary">اضافة</button>
+              <button type="submit" class="btn btn-primary">{% if update %}تحديث{% else %}اضافة{% endif %}</button>
             </div>
           </form>
+      </div>
     </div>
   </div>
 </div>
-
 {% endblock %}
