@@ -116,21 +116,13 @@
           <!-- form start -->
           <form method="POST" action="{% url 'add_book' %}" enctype="multipart/form-data">
             {% csrf_token %}
-
             <div class="card-body"> 
-                  <input name="title" type="text"  class="form-control" placeholder="عنوان الكتاب">
-                  <input name="author" type="text" class="form-control" placeholder="المؤلف">
-                  <input name="genre" type="text" class="form-control" placeholder="النوع">
-                  <input name="status" type="text" class="form-control" placeholder="الحالة">
-                  <input name="price" type="text" class="form-control" placeholder="السعر">
-                  <input type="text" placeholder="الصورة" class="form-control" name="image_url" id='totalrente' ></small>
-              </div>
-              <!-- /.card-body -->
-              <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">اضافة</button>
-              </div>
+              {{ form }}
+            </div>
+            <div class="card-footer">
+              <button type="submit" class="btn btn-primary">اضافة</button>
+            </div>
           </form>
-      </div>
     </div>
   </div>
 </div>
