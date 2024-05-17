@@ -77,3 +77,9 @@ def update_book(request, pk):
         'book': book
     }
     return render(request, 'pages/books.html', context)
+
+@csrf_exempt
+def delete_book(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    book.delete()
+    return redirect('listBooks')

@@ -36,6 +36,12 @@
                 </div>
                 <div class="card-footer">
                   <div class="text-right">
+                    <form method="POST" action="{% url 'delete_book' book.pk %}" style="display: inline;">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-sm bg-danger" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا الكتاب؟');">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </form>
                     <a href="{% url 'update_book' book.pk %}" class="btn btn-sm btn-primary">
                       <i class="fas fa-book"></i> تعديل
                     </a>
